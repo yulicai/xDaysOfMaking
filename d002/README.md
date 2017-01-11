@@ -1,4 +1,4 @@
-#day 001
+#day 002
 [project link](http://caiyuli.com/projects/xDaysOfMaking/d002/)
  <br />
  <br />
