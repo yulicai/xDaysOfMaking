@@ -9,3 +9,16 @@ three.js | shader
  <br />
  <br />
 Catfish,Cod,Salmon,Trout,Halibut...Awww countless fishes, we are so blessed.
+
+
+##learned today
+Patterns section from the book of shaders.
+ <br />
+ <br />
+ Seperate the entire space into brick zones using fract();
+ <pre><code>
+ vec2 tile(vec2 _st, float _zoom){
+    _st *= _zoom;
+    return fract(_st);
+}
+</code></pre>
