@@ -22,3 +22,25 @@ Patterns section from the book of shaders.
     return fract(_st);
 }
 </code></pre>
+
+ <br />
+ Using modular function to detect odd and even section, combining with step(), give each zone an index number.
+ <br />
+ <pre><code>
+//  Scale the coordinate system by 2x2
+   _st *= 2.0;
+
+   //  Give each cell an index number
+   //  according to its position
+   float index = 0.0;    
+   index += step(1., mod(_st.x,2.0));
+   index += step(1., mod(_st.y,2.0))*2.0;
+
+   //      |
+   //  2   |   3
+   //      |
+   //--------------
+   //      |
+   //  0   |   1
+   //      |
+   </code></pre>
