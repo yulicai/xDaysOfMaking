@@ -20,8 +20,10 @@ Random section from the book of shaders.
  y = fract( sin( x ) * b );
  <br />
   <br />
- by increasing b(a float number) dramatically, it will squeeze each sin wave to extremely small and thus create pseudo-random value in 1D.
+ By increasing b (a float number) dramatically, it will squeeze each sin wave to extremely small and thus create pseudo-random value in 1D.
  <br />
+  <br />
+  <br />
   <br />
  To achieve random value in 2D, we use dot( ) to transform a two dimensional vector into a one dimensional floating point value.
  <br />
@@ -35,13 +37,12 @@ Random section from the book of shaders.
 </code></pre>
 
  <br />
-Using floor() to manipulate coordinate system, we can achieve grid/pixel like image.
+Using floor( ) to manipulate coordinate system, we can achieve grid/pixel like image.
  <br />
  <pre><code>
     //st is the coordinate of the current pixel, it is a vec2
     st  * =  10.0; // Scale the coordinate system by 10
     vec2 ipos = floor(st);  // get the integer coords
-
     // Assign a random value based on the integer coord
     //or thinking about combining with camera feed, so we can achieve pixelized video
     vec3 color = vec3(random( ipos ));
