@@ -1,4 +1,6 @@
 #day 003
+move mouse horizontally to play with it
+<br />
 [project link](http://caiyuli.com/projects/xDaysOfMaking/d003/)
  <br />
  <br />
