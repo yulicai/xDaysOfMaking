@@ -14,12 +14,15 @@ three.js | shader
 Random section from the book of shaders.
  <br />
  <br />
- Random function is a adding up result of sin--
+ Random function is a adding up result of sin
  <br />
+  <br />
  y = fract(sin(x)*b);
  <br />
- by increasing b(a float number) dramatically,it will squeeze each sin wave to extremely small and thus create pseudo-random value in 1D.
+  <br />
+ by increasing b(a float number) dramatically, it will squeeze each sin wave to extremely small and thus create pseudo-random value in 1D.
  <br />
+  <br />
  To achieve random value in 2D, we use dot() to transform a two dimensional vector into a one dimensional floating point value.
  <br />
 
