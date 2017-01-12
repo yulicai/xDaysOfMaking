@@ -1,0 +1,82 @@
+<html>
+<head>
+  <title>17_d001</title>
+</head>
+<body>
+  <div id = "container"></div>
+  <script src="js/three.js"></script>
+  <script id = "vertexShader" type = "x-shader/x-vertex">
+  void main() {
+        gl_Position = vec4( position, 1.0 );
+    }
+  </script>
+
+  <script id = "fragmentShader" type = "x-shader/x-fragment">
+
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+
+  #define PI 3.14159265358979323846
+
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_time;
+
+  float random (in vec2 _st) {
+      return fract(sin(dot(_st.xy,
+                           vec2(12.9898,78.233)))*
+          43758.5453123);
+  }
+
+
+  vec2 truchetPattern(in vec2 _st, in float _index){
+    //the index that feeds into this function in this case is bt 0.`` 1.
+    //turn it into -1.~1.
+      _index = fract(((_index-0.5)*2.0));
+      //base on different zones, rotate the coordinate differently
+      if (_index > 0.75) {
+          _st = vec2(1.0) - _st;
+      } else if (_index > 0.5) {
+          _st = vec2(1.0-_st.x,_st.y);
+      } else if (_index > 0.25) {
+          _st = 1.0-vec2(1.0-_st.x,_st.y);
+      }
+      return _st;
+  }
+
+  void main() {
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    //the following 4 lines are messing up with coordinate
+    st *= 10.0;
+    st = (st-vec2(5.0))*(abs(sin(u_time*0.2))*5.);
+    st = st*abs(sin(u_mouse.x/500.))*5.;
+    st.x += u_time*3.0;
+
+    //ipos: floor feeds the random function to create grid
+    vec2 ipos = floor(st);  // integer
+    //fpos: fract maintain the original coordinate system in each grid
+    vec2 fpos = fract(st);  // fraction
+    //truchetPattern function combine randomness with order
+    vec2 tile = truchetPattern(fpos, random( ipos ));
+
+    float color = 0.0;
+
+ // Maze
+ // color = smoothstep(tile.y-0.4,tile.y,tile.x)-smoothstep(tile.y,tile.y+0.4,tile.x);
+ // color = step(tile.x,tile.y);
+
+ // Circles
+ float fTime = abs(cos(u_time));
+ color = (step(length(tile),fTime) -
+          step(length(tile),(1.-fTime)) ) +
+         (step(length(tile-vec2(1.)),fTime) -
+          step(length(tile-vec2(1.)),(1.-fTime)) );
+
+
+ gl_FragColor = vec4(vec3(color),1.0);
+  }
+  </script>
+<script src = "app.js"></script>
+</body>
+</html>
