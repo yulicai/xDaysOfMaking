@@ -22,9 +22,10 @@ Noise section from the book of shaders.
   float i = floor(x);  // integer  <br />  <br />
  float f = fract(x);  // fraction  <br />  <br />
  y = rand(i);  (blocks of number) <br />  <br />
+ //the following are noise part<br />  <br />
  y = mix(rand(i), rand(i + 1.0), f);  <br />  <br />
  y = mix(rand(i), rand(i + 1.0), smoothstep(0.,1.,f));  <br />  <br />
- mix( ) -- mix() performs a linear interpolation between x and y using a to weight between them. The return value is computed as x × (1−a) + y × a.<br />  <br />
+ mix( ) -- mix() performs a linear interpolation between x and y using a to weight between them. The return value is computed as x × (1−a) + y × a. So the smaller the a is, the closer to x, the larger the a is, closer to y. <br />  <br />
  <br />
 
  2D noise function
@@ -35,7 +36,7 @@ Noise section from the book of shaders.
      vec2 i = floor(st);
      vec2 f = fract(st);
      //same as smoothstep()
-     vec2 u = f*f*(3.0-2.0*f);
+     vec2 u = f * f * (3.0-2.0 * f);
      // u = smoothstep(0.,1.,f);
      return mix( mix( dot( random2(i + vec2(0.0,0.0) ), f - vec2(0.0,0.0) ),
                       dot( random2(i + vec2(1.0,0.0) ), f - vec2(1.0,0.0) ), u.x),
