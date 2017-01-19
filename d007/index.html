@@ -1,0 +1,108 @@
+<html>
+<head>
+  <title>17_d001</title>
+</head>
+<body>
+  <div id = "container"></div>
+  <script src="js/three.js"></script>
+  <script id = "vertexShader" type = "x-shader/x-vertex">
+  void main() {
+        gl_Position = vec4( position, 1.0 );
+    }
+  </script>
+
+  <script id = "fragmentShader" type = "x-shader/x-fragment">
+  // modify from http://thebookofshaders.com/12/
+
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_time;
+
+  vec2 random2( vec2 p ) {
+      return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+  }
+
+  vec2 unitVec (vec2 p){
+      return p/length(p);
+  }
+
+  float noise(vec2 st) {
+      vec2 i = floor(st);
+      vec2 f = fract(st);
+      vec2 u = f*f*(3.0-2.0*f);
+
+      return mix( mix( dot( random2(i + vec2(0.0,0.0) ), f - vec2(0.0,0.0) ),
+                       dot( random2(i + vec2(1.0,0.0) ), f - vec2(1.0,0.0) ), u.x),
+                  mix( dot( random2(i + vec2(0.0,1.0) ), f - vec2(0.0,1.0) ),
+                       dot( random2(i + vec2(1.0,1.0) ), f - vec2(1.0,1.0) ), u.x), u.y);
+  }
+
+
+  void main() {
+      vec2 st = gl_FragCoord.xy/u_resolution.xy;
+      st.x *= u_resolution.x/u_resolution.y;
+      vec3 color = vec3(.0);
+      vec2 vel = vec2(u_time*.6);
+
+      // Scale
+      // the distortion of the scale is defined by the graph of function pow(x,2)
+      st.x *= 5.*pow(st.x,3.);
+      st.y *= 3.*pow(-st.x,0.34)*sin(u_time*0.1*3.14159)*sin(u_time*0.1*3.14159);
+        vec2 diffVec = u_mouse-st;
+      // Tile the space
+      vec2 i_st = floor(st);
+      vec2 f_st = fract(st);
+      f_st.x *= 1.;
+
+      float m_dist = 1.;  // minimun distance
+      vec2 m_point;
+
+
+      for (int y= -1; y <= 1; y++) {
+          for (int x= -1; x <= 1; x++) {
+              // Neighbor place in the grid
+              vec2 neighbor = vec2(float(x),float(y));
+
+              // Random position from current + neighbor place in the grid
+              vec2 point = random2(i_st + neighbor);
+
+  			      // Animate the point
+              point = 0.5 + 0.4*sin(u_time + 6.2831*point);
+              point *= unitVec(diffVec);
+
+  			      // Vector between the pixel and the point
+              vec2 diff = neighbor + point - f_st;
+
+              // Distance to the point
+              float dist = length(diff);
+
+            // Keep the closer distance
+        		if( dist < m_dist ) {
+        	 		m_dist = dist;
+         	 		m_point = point;
+    		  	}
+          }
+      }
+
+      // Draw the min distance (distance field)
+      color += m_dist;
+  	  color.rb += m_point;
+      // Draw cell center
+      // color += 1.-step(.02, m_dist);
+
+      // Draw grid
+      // color.r += step(.98, f_st.x) + step(.98, f_st.y);
+
+      // Show isolines
+      // color -= step(.7,abs(sin(27.0*m_dist)))*.5;
+
+      gl_FragColor = vec4(color,1.0);
+  }
+  </script>
+<script src = "app.js"></script>
+</body>
+</html>

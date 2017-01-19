@@ -6,3 +6,31 @@ Since a lot of contents from this poetry collection are describing natural patte
  <br />
   <br />
 Starting Date: Jan 10 2017
+
+
+<br />
+<br />
+##some useful function from the book of shader
+<br />
+####2D random
+<br />
+<pre><code>
+vec2 random2( vec2 p ) {
+    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+}
+</code></pre>
+<br />
+<br />
+#### Noise 2D
+<br />
+<pre><code>
+float noise(vec2 st) {
+    vec2 i = floor(st);
+    vec2 f = fract(st);
+    vec2 u = f*f*(3.0-2.0*f);
+    return mix( mix( random( i + vec2(0.0,0.0) ),
+                     random( i + vec2(1.0,0.0) ), u.x),
+                mix( random( i + vec2(0.0,1.0) ),
+                     random( i + vec2(1.0,1.0) ), u.x), u.y);
+}
+</code></pre>
