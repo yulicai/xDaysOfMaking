@@ -12,7 +12,7 @@ three.js | shader
  芙蓉落尽天涵水，日暮沧波起
  <br />
  <br />
- Lotus sheds, see melts into sky, water waving around sunset.
+ Lotus sheds, sea melts into sky, and water waving around the rising sunset.
 
 ##learned today
 Jan 19th 2017
