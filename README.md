@@ -11,16 +11,17 @@ Starting Date: Jan 10 2017
 <br />
 <br />
 ##some useful functions from the book of shader
-<br />
+
+
 ####2D random
 <pre><code>
 vec2 random2( vec2 p ) {
-    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3))))*43758.5453);
+    return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)))) * 43758.5453);
 }
 </code></pre>
 
+
 #### Noise 2D
-<br />
 <pre><code>
 //based on pre-included random function
 float noise(vec2 st) {
