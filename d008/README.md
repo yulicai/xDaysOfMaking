@@ -17,10 +17,12 @@ three.js | shader
 ##learned today
 Jan 26th 2017
 <br />
+ <br />
 Fractal Brownian Motion(fBm) Section in the book of shaders
 <br />
 分型布朗运动
 <br />
+ <br />
 waves adding up, either sin waves or noise waves
 <br />
 this technique is usually used for describing natural mountain, landscapes, cloud etc.
@@ -50,7 +52,7 @@ for (int i = 0; i < octaves; i++) {
 }
  </code></pre>
 
- 4. turbulence: It's essentially an fBm, but constructed from the absolute value of a signed noise to create sharp valleys in the function.
+4. turbulence: It's essentially an fBm, but constructed from the absolute value of a signed noise to create sharp valleys in the function.
  <code><pre>
  for (int i = 0; i < OCTAVES; i++) {
     value += amplitude * abs(snoise(st));
@@ -58,13 +60,14 @@ for (int i = 0; i < octaves; i++) {
     amplitud * = .5;
 }
  </pre></code>
+
 ### Domain Warping
 mainly based on the [function by Inigo Quiles](http://www.iquilezles.org/www/articles/warp/warp.htm) to to use fBm to warp a space of a fBm, so thus it has cloud or space warping effect
  <br />
+
  <pre><code>
  #define NUM_OCTAVES 23
-
-float fbm ( in vec2 _st) {
+ float fbm ( in vec2 _st) {
     float v = 0.0;
     float a = 0.5;
     vec2 shift = vec2(100.0);
@@ -80,4 +83,3 @@ float fbm ( in vec2 _st) {
 }
  </code></pre>
  <br />
-  <br />
