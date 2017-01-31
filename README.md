@@ -34,3 +34,11 @@ float noise(vec2 st) {
                      random( i + vec2(1.0,1.0) ), u.x), u.y);
 }
 </code></pre>
+
+#### Rotate 2D
+<pre><code>
+mat2 rotate2d(float angle){
+    return mat2(cos(angle),-sin(angle),
+                sin(angle),cos(angle));
+}
+</code></pre>
