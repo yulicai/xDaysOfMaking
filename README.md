@@ -36,10 +36,14 @@ float noise(vec2 st) {
 </code></pre>
 
 #### Rotate 2D
-![matrix math reference](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rotmat.png)
+
 <pre><code>
 mat2 rotate2d(float angle){
     return mat2(cos(angle),-sin(angle),
                 sin(angle),cos(angle));
 }
 </code></pre>
+
+Math reference for the above rotation function
+</ br>
+![matrix math reference](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rotmat.png)
