@@ -22,9 +22,8 @@ Image Processing Section in the book of shaders
 
 <br />
  <br />
-sampler2D( ) and texture2D( )
-<br />
-<br />
+####sampler2D( ) and texture2D( )
+
 "Once the texture is loaded and linked to a valid uniform sampler2D you can ask for specific color value at specific coordinates (formated on a vec2 variable) usin the texture2D() function which will return a color formated on a vec4 variable."
  <pre><code>
 vec4 texture2D(sampler2D texture, vec2 coordinates)  
@@ -42,7 +41,7 @@ st * = scale;
 st += radius * vec2(cos(angle),sin(angle));
  </pre></code>
 
-### Moving images (iterate through rows and )
+#### Moving images (iterate through rows and col )
 To create a moving image effect
  <br />
 
@@ -50,7 +49,6 @@ To create a moving image effect
  vec2 nRes = vec2(col,row);
     // Scale the coordenates to a single frame
     st = st/nRes;
-
     // Calculate the offset in cols and rows
     float timeX = u_time*15.;
     float timeY = floor(timeX/float(col));

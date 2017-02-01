@@ -45,5 +45,5 @@ mat2 rotate2d(float angle){
 </code></pre>
 
 Math reference for the above rotation function
-</ br>
+
 ![matrix math reference](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rotmat.png)
