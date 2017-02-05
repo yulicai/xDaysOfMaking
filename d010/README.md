@@ -20,12 +20,10 @@ Feb 5th 2017
  <br />
 Practicing the basics applications of threejs
 
-<br />
- <br />
 ####basics
-geometry, material >> mesh
-light, mesh >> scene
-camera, scene >> renderer
+geometry, material >> mesh </ br></ br>
+light, mesh >> scene</ br></ br>
+camera, scene >> renderer</ br>
 ####update position
 If update needed, then need to add these two kinds of code accordingly to the render function
  <pre><code>
@@ -34,7 +32,7 @@ mesh.geometry.verticesNeedUpdate = true;
 //geometry.attributes.position.needsUpdate = true;
  </code></pre>
 
- ####color control
+####color control
 [threejs documentation](https://threejs.org/docs/index.html#Reference/Math/Color)
  <code><pre>
 var color = new THREE.Color("rgb(255, 0, 0)");
