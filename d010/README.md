@@ -21,9 +21,9 @@ Feb 5th 2017
 Practicing the basics applications of threejs
 
 ####basics
-geometry, material >> mesh </ br></ br>
-light, mesh >> scene</ br></ br>
-camera, scene >> renderer</ br>
+geometry, material >> mesh <br /><br />
+light, mesh >> scene<br /><br />
+camera, scene >> renderer<br />
 ####update position
 If update needed, then need to add these two kinds of code accordingly to the render function
  <pre><code>
@@ -31,7 +31,7 @@ mesh.geometry.verticesNeedUpdate = true;
 //if using bufferGeometry, use the following pattern instead
 //geometry.attributes.position.needsUpdate = true;
  </code></pre>
-
+<br />
 ####color control
 [threejs documentation](https://threejs.org/docs/index.html#Reference/Math/Color)
  <code><pre>
