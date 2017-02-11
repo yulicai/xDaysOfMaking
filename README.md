@@ -65,3 +65,14 @@ float stroke(float v, float p, float w){
 //in the main function in the fragment shader
 color += stroke(st.x,0.5,0.1)
 </code></pre>
+<br />
+#### Box Function (shaping)
+<pre><code>
+//p stands for central position
+//w stands for width
+float box(vec2 st, float p, float w){
+    return step(p-w, st.x) * step(p-w,1.-st.x)
+       * step(p-w,st.y) * step(p-w,1.-st.y);
+
+}
+</code></pre>
