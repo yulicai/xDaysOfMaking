@@ -47,3 +47,16 @@ mat2 rotate2d(float angle){
 Math reference for the above rotation function
 
 ![matrix math reference](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rotmat.png)
+
+#### Stroke Function (shaping)
+The shaping function for a stroke; <br />
+By multiplying them together, only both of the return value of step( ) is 1, it will be 1 (instead of 0);<br />
+Revert the direction of it by minus number from 1. <br />
+<pre><code>
+float stroke(float v, float p, float w){
+  //v is usually the coordinate number, p is usually the middle of the line(for example in the middle of //the screen it would be 0.5, w is the width of the line)
+  return step(p-w,v) * step(p-w,1.-v);
+}
+//in the main function in the fragment shader
+color += stroke(st.x,0.5,0.1)
+</code></pre>
