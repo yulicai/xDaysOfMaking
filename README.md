@@ -56,6 +56,8 @@ Revert the direction of it by minus number from 1. <br />
 <pre><code>
 float stroke(float v, float p, float w){
   return step(p-w,v) * step(p-w,1.-v);
+  //or this one
+  //return step(p,v+w*.5) - step(p,v-w*.5);
   //v is usually the coordinate number,(like uv)
   //p is usually the middle of the line, where you want to place the line
   //(for example in the middle of the screen it would be 0.5, w is the width of the line)
