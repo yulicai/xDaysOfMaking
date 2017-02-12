@@ -81,6 +81,7 @@ float box(vec2 st, float p, float w){
 ### Sign Distance Field (shaping)
 
 **Rectangle SDF**
+
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png" width = "250">
 <pre><code>
 //a separate function
@@ -140,7 +141,7 @@ void main() {
     float c2 = circleSDF(st+.1);
     float r = rectSDF(st,vec2(1.));
 
-    //>>> IMPORTANT - combining them together <<<//
+    //>>> IMPORTANT - combining them together
     float sdf = min (min(c1,c2),r);
 
     color += r; //for background foggy distance field
