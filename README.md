@@ -67,7 +67,10 @@ float stroke(float v, float p, float w){
 color += stroke(st.x,0.5,0.1)
 </code></pre>
 
-Thick stroke
+**Thick stroke**
+
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_thick.png" width = "250">
+<br />
 <pre><code>
 void main() {
     vec2 st = gl_FragCoord.xy/u_resolution.xy;
@@ -88,14 +91,41 @@ void main() {
 }
 </code></pre>
 
-<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_thick.png" width = "250">
+
+**Thin stroke**
+
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_thin.png" width = "250">
 <br />
-Thin stroke
 <pre><code>
 color += stroke(sdf,0.400,0.012);
 </code></pre>
 
-<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_thin.png" width = "250">
+**Fract Distance Field Stroke**
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_fract_sdf.png" width = "250">
+<br />
+* color += stroke(fract(sdf*10.),0.400,0.124);
+<pre><code>
+void main() {
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    st.x * = u_resolution.x/u_resolution.y;
+
+    vec3 color = vec3(0.700,0.042,0.645);
+
+    float c = circleSDF(st);
+    float c1 = circleSDF(st-.1);
+    float c2 = circleSDF(st+.1);
+    float c3 = circleSDF(vec2(st.x-0.3,st.y));
+    float r = rectSDF(st,vec2(1.));
+
+    float sdf = min (min(c3,min(c1,c2)),r);
+
+    color += r;
+    //*** HERE
+    color += stroke(fract(sdf*10.),0.400,0.124);
+
+    gl_FragColor = vec4(color,1.0);
+}
+</code></pre>
 <br />
 ### Box Function (shaping)
 <pre><code>
@@ -187,10 +217,10 @@ void main() {
 **Adding one more shape**
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/add_shape.png" width = "250">
-* by minus .3 to the original x coordinate, it moves the circle the right by .3
+* by minus .3 to the original x coordinate, it moves the circle the right by .3 <br />
 float c3 = circleSDF(vec2(st.x-0.3,st.y)); <br />
 
-* by adding another layer of selection process, using min( )
+* by adding another layer of selection process, using min( ) <br />
 float sdf = min (min(c3,min(c1,c2)),r); <br />
 <pre><code>
 void main() {
