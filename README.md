@@ -81,7 +81,8 @@ float box(vec2 st, float p, float w){
 ### Sign Distance Field (shaping)
 
 **Rectangle SDF**
-![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png =250x250)
+![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png)
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png" width = "250">
 <pre><code>
 //a separate function
 float rectSDF(vec2 st, vec2 density){
@@ -102,7 +103,9 @@ void main() {
 </code></pre>
 
 **Min Circle SDF**
-![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png =250x250)
+![Min circle sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png)
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png" width = "250">
+
 <pre><code>
 float circleSDF(vec2 st, vec2 placement, float density){
     return length(st-placement) * density;
@@ -120,4 +123,31 @@ void main() {
 
     gl_FragColor = vec4(color,1.0);
 }
+</code></pre>
+
+**Combining Shapes**
+![combined shape with sdf](https://github.com/yulicai/xDaysOfMaking/raw/master/images/combined_shape.png)
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/combined_shape.png" width = "250">
+<pre><code>
+void main() {
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    st.x * = u_resolution.x/u_resolution.y;
+
+    //background color
+    vec3 color = vec3(0.700,0.042,0.645);
+
+    //3 original shape of distance field
+    float c1 = circleSDF(st-.1);
+    float c2 = circleSDF(st+.1);
+    float r = rectSDF(st,vec2(1.));
+
+    //>>> IMPORTANT - combining them together <<<//
+    float sdf = min (min(c1,c2),r);
+
+    color += r; //for background foggy distance field
+    color += fill(sdf,.5);
+
+    gl_FragColor = vec4(color,1.0);
+}
+
 </code></pre>
