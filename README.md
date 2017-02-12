@@ -101,9 +101,10 @@ color += stroke(sdf,0.400,0.012);
 </code></pre>
 
 **Fract Distance Field Stroke**
+
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_fract_sdf.png" width = "250">
 <br />
-* color += stroke(fract(sdf*10.),0.400,0.124);
+* color += stroke ( fract( sdf * 10. ), 0.400, 0.124);
 <pre><code>
 void main() {
     vec2 st = gl_FragCoord.xy/u_resolution.xy;
@@ -127,13 +128,13 @@ void main() {
 }
 </code></pre>
 <br />
+
 ### Box Function (shaping)
 <pre><code>
 //p stands for central position
 //w stands for width
 float box(vec2 st, float p, float w){
-    return step(p-w, st.x) * step(p-w,1.-st.x)
-       * step(p-w,st.y) * step(p-w,1.-st.y);
+    return step(p-w, st.x) * step(p-w,1.-st.x) * step(p-w,st.y) * step(p-w,1.-st.y);
 
 }
 </code></pre>
