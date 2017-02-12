@@ -182,12 +182,16 @@ void main() {
     gl_FragColor = vec4(color,1.0);
 }
 </code></pre>
-<br />
+
 
 **Adding one more shape**
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/add_shape.png" width = "250">
+* by minus .3 to the original x coordinate, it moves the circle the right by .3
+float c3 = circleSDF(vec2(st.x-0.3,st.y)); <br />
 
+* by adding another layer of selection process, using min( )
+float sdf = min (min(c3,min(c1,c2)),r); <br />
 <pre><code>
 void main() {
     vec2 st = gl_FragCoord.xy/u_resolution.xy;
