@@ -81,7 +81,7 @@ float box(vec2 st, float p, float w){
 ### Sign Distance Field (shaping)
 
 **Rectangle SDF**
-![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png =250x)
+![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png =250x250)
 <pre><code>
 //a separate function
 float rectSDF(vec2 st, vec2 density){
@@ -102,7 +102,7 @@ void main() {
 </code></pre>
 
 **Min Circle SDF**
-![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png =250x)
+![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png =250x250)
 <pre><code>
 float circleSDF(vec2 st, vec2 placement, float density){
     return length(st-placement) * density;
