@@ -48,6 +48,7 @@ Math reference for the above rotation function
 ![matrix math reference](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rotmat.png)
 <br />
 <br />
+<br />
 ### Stroke and Fill Functions (shaping)
 The shaping function for a stroke; <br />
 By multiplying them together, only both of the return value of step( ) is 1, it will be 1 ( instead of 0 );<br />
@@ -157,6 +158,8 @@ void main() {
 **Combining Shapes**
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/combined_shape.png" width = "250">
+<br />
+Using min( ), to select the inner part of the section shared by all the shapes <br>
 <pre><code>
 void main() {
     vec2 st = gl_FragCoord.xy/u_resolution.xy;
@@ -178,5 +181,35 @@ void main() {
 
     gl_FragColor = vec4(color,1.0);
 }
+</code></pre>
+<br />
 
+**Adding one more shape**
+
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/add_shape.png" width = "250">
+
+<pre><code>
+void main() {
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    st.x * = u_resolution.x/u_resolution.y;
+
+    vec3 color = vec3(0.700,0.042,0.645);
+
+    float c = circleSDF(st);
+    float c1 = circleSDF(st-.1);
+    float c2 = circleSDF(st+.1);
+    float r = rectSDF(st,vec2(1.));
+
+    //add one more shape
+    //by minus .3 to the original x coordinate, it moves the circle the right by .3
+    float c3 = circleSDF(vec2(st.x-0.3,st.y));
+
+    //by adding another layer of selection process, using min( )
+    float sdf = min (min(c3,min(c1,c2)),r);
+
+    color += r;
+    color += stroke(sdf,0.400,0.012);
+
+    gl_FragColor = vec4(color,1.0);
+}
 </code></pre>
