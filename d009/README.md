@@ -21,7 +21,6 @@ Feb 1st 2017
 Image Processing Section in the book of shaders
 
 <br />
- <br />
 ####sampler2D( ) and texture2D( )
 
 "Once the texture is loaded and linked to a valid uniform sampler2D you can ask for specific color value at specific coordinates (formated on a vec2 variable) usin the texture2D() function which will return a color formated on a vec4 variable."

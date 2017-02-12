@@ -48,7 +48,7 @@ Math reference for the above rotation function
 
 ![matrix math reference](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rotmat.png)
 <br />
-
+<br />
 #### Stroke Function (shaping)
 The shaping function for a stroke; <br />
 By multiplying them together, only both of the return value of step( ) is 1, it will be 1 ( instead of 0 );<br />
@@ -66,6 +66,7 @@ float stroke(float v, float p, float w){
 color += stroke(st.x,0.5,0.1)
 </code></pre>
 <br />
+
 #### Box Function (shaping)
 <pre><code>
 //p stands for central position
@@ -74,5 +75,49 @@ float box(vec2 st, float p, float w){
     return step(p-w, st.x) * step(p-w,1.-st.x)
        * step(p-w,st.y) * step(p-w,1.-st.y);
 
+}
+</code></pre>
+
+#### Sign Distance Field (shaping)
+
+**Rectangle SDF**
+![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png)
+<pre><code>
+//a separate function
+float rectSDF(vec2 st, vec2 density){
+    st = st*2. - 1.;
+    return max(abs(st.x/density.x),abs(st.y/density.y));
+}
+//in the main function in fragment shader
+void main() {
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    st.x * = u_resolution.x/u_resolution.y;
+
+    vec3 color = vec3(0.);
+    float r_field = rectSDF(st, vec2(1.));
+    color += r_field;
+
+    gl_FragColor = vec4(color,1.0);
+}
+</code></pre>
+
+**Min Circle SDF**
+![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png)
+<pre><code>
+float circleSDF(vec2 st, vec2 placement, float density){
+    return length(st-placement) * density;
+}
+//in the main function in fragment shader
+void main() {
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    st.x * = u_resolution.x/u_resolution.y;
+
+    vec3 color = vec3(0.);
+    float c1 = circleSDF(st - .1, vec2(.5),2.);
+    float c2 = circleSDF(st + .1, vec2(.5),2.);
+    float sdf = min(c1,c2);
+    color += sdf;
+
+    gl_FragColor = vec4(color,1.0);
 }
 </code></pre>
