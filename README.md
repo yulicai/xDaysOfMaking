@@ -38,9 +38,8 @@ float noise(vec2 st) {
 ### Rotate 2D
 
 <pre><code>
-mat2 rotate2d(float angle){
-    return mat2(cos(angle),-sin(angle),
-                sin(angle),cos(angle));
+vec2 rotate(vec2 st, float angle){
+    return mat2(cos(angle),-sin(angle),sin(angle),cos(angle)) * st;
 }
 </code></pre>
 
@@ -49,7 +48,7 @@ Math reference for the above rotation function
 ![matrix math reference](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rotmat.png)
 <br />
 <br />
-### Stroke Function (shaping)
+### Stroke and Fill Functions (shaping)
 The shaping function for a stroke; <br />
 By multiplying them together, only both of the return value of step( ) is 1, it will be 1 ( instead of 0 );<br />
 Revert the direction of it by minus number from 1. <br />
@@ -61,12 +60,42 @@ float stroke(float v, float p, float w){
   //v is usually the coordinate number,(like uv)
   //p is usually the middle of the line, where you want to place the line
   //(for example in the middle of the screen it would be 0.5, w is the width of the line)
+  // w is the thickness of the stroke
 }
 //in the main function in the fragment shader
 color += stroke(st.x,0.5,0.1)
 </code></pre>
-<br />
 
+Thick stroke
+<pre><code>
+void main() {
+    vec2 st = gl_FragCoord.xy/u_resolution.xy;
+    st.x * = u_resolution.x/u_resolution.y;
+    vec3 color = vec3(0.700,0.042,0.645);
+
+    float c = circleSDF(st);
+    float c1 = circleSDF(st-.1);
+    float c2 = circleSDF(st+.1);
+    float r = rectSDF(st,vec2(1.));
+
+    float sdf = min (min(c1,c2),r);
+    color += r;
+    //****** HERE
+     color += stroke(sdf,0.400,0.124);
+
+    gl_FragColor = vec4(color,1.0);
+}
+</code></pre>
+
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_thick.png" width = "250">
+<br />
+Thin stroke
+<pre><code>
+color += stroke(sdf,0.400,0.012);
+</code></pre>
+
+<img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_thin.png" width = "250">
+<br />
 ### Box Function (shaping)
 <pre><code>
 //p stands for central position
@@ -77,7 +106,7 @@ float box(vec2 st, float p, float w){
 
 }
 </code></pre>
-
+<br />
 ### Sign Distance Field (shaping)
 
 **Rectangle SDF**
