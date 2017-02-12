@@ -51,16 +51,16 @@ Math reference for the above rotation function
 ### Stroke and Fill Functions (shaping)
 The shaping function for a stroke; <br />
 By multiplying them together, only both of the return value of step( ) is 1, it will be 1 ( instead of 0 );<br />
-Revert the direction of it by minus number from 1. <br />
+Revert the direction of it by minus number from 1. <br /><br />
+* v is usually the coordinate number,(like uv)<br />
+* p is usually the middle of the line, where you want to place the line<br />
+(for example in the middle of the screen it would be 0.5, w is the width of the line)<br />
+* w is the thickness of the stroke<br />
 <pre><code>
 float stroke(float v, float p, float w){
   return step(p-w,v) * step(p-w,1.-v);
   //or this one
   //return step(p,v+w*.5) - step(p,v-w*.5);
-  //v is usually the coordinate number,(like uv)
-  //p is usually the middle of the line, where you want to place the line
-  //(for example in the middle of the screen it would be 0.5, w is the width of the line)
-  // w is the thickness of the stroke
 }
 //in the main function in the fragment shader
 color += stroke(st.x,0.5,0.1)
