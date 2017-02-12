@@ -10,10 +10,10 @@ Starting Date: Jan 10 2017
 
 <br />
 <br />
-##some useful functions from the book of shader
+#some useful functions from the book of shader
 
 
-####2D random
+###2D random
 <pre><code>
 vec2 random2( vec2 p ) {
     return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)))) * 43758.5453);
@@ -21,7 +21,7 @@ vec2 random2( vec2 p ) {
 </code></pre>
 
 
-#### Noise 2D
+### Noise 2D
 <pre><code>
 //based on pre-included random function
 float noise(vec2 st) {
@@ -35,7 +35,7 @@ float noise(vec2 st) {
 }
 </code></pre>
 
-#### Rotate 2D
+### Rotate 2D
 
 <pre><code>
 mat2 rotate2d(float angle){
@@ -49,7 +49,7 @@ Math reference for the above rotation function
 ![matrix math reference](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rotmat.png)
 <br />
 <br />
-#### Stroke Function (shaping)
+### Stroke Function (shaping)
 The shaping function for a stroke; <br />
 By multiplying them together, only both of the return value of step( ) is 1, it will be 1 ( instead of 0 );<br />
 Revert the direction of it by minus number from 1. <br />
@@ -67,7 +67,7 @@ color += stroke(st.x,0.5,0.1)
 </code></pre>
 <br />
 
-#### Box Function (shaping)
+### Box Function (shaping)
 <pre><code>
 //p stands for central position
 //w stands for width
@@ -78,10 +78,10 @@ float box(vec2 st, float p, float w){
 }
 </code></pre>
 
-#### Sign Distance Field (shaping)
+### Sign Distance Field (shaping)
 
 **Rectangle SDF**
-![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png)
+![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png=250x)
 <pre><code>
 //a separate function
 float rectSDF(vec2 st, vec2 density){
@@ -102,7 +102,7 @@ void main() {
 </code></pre>
 
 **Min Circle SDF**
-![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png)
+![rect sign distance field](https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png=250x)
 <pre><code>
 float circleSDF(vec2 st, vec2 placement, float density){
     return length(st-placement) * density;
