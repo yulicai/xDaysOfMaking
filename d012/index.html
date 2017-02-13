@@ -48,9 +48,9 @@
       vec2 st_f = fract(st);
       vec2 st_i = floor(st);
       float t = u_time  * PI;
-
-      st_f = (mod(floor(t*.2),2.)*mod(st_i.y,2.)*rotate(vec2(st_f.x+0.25,st_f.y-0.5),-PI/4.)+mod(ceil(t*.2),2.)*mod(st_i.x,2.)*rotate(vec2(st_f.x-.5,st_f.y+.25),PI/4.));
-  	float change = .3 * sin(t);
+      st_f = (mod(floor(t*.2),2.)*mod(st_i.y,2.)*rotate(vec2(st_f.x+0.25,st_f.y-0.5),-PI/4.)
+      +mod(ceil(t*.2),2.)*mod(st_i.x,2.)*rotate(vec2(st_f.x-.5,st_f.y+.25),PI/4.));
+  	  float change = .3 * sin(t);
       vec3 color = vec3(0.935*(1.-sin(2.*t)*.3),0.263*(1.-sin(2.*t)*.3),0.652*(1.-sin(2.*t)*.3));
       float c1 = circleSDF(st_f - change, vec2(.5),2.);
       float c2 = circleSDF(st_f + change, vec2(.5),2.);
