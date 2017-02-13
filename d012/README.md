@@ -25,7 +25,6 @@ Practicing shaping, textiles and rotating function in GLSL language after the sh
 * play around with time control, so the color gets a full change in one cycle of the sin section
 <pre><code>
 float t = u_time * 2. * PI;
-
 st_f = (mod(floor(t*.2),2.)* mod(st_i.y,2.)* rotate(vec2(st_f.x+0.25,st_f.y-0.5),-PI/4.)+mod(ceil(t*.2),2.)* mod(st_i.x,2.)* rotate(vec2(st_f.x-.5,st_f.y+.25),PI/4.));
 float change = .3 * sin(t);
 vec3 color = vec3(0.935*(1.-sin(2.* t)* .3),0.263*(1.-sin(2.* t)* .3),0.652*(1.-sin(2.* t)* .3));
