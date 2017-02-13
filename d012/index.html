@@ -1,0 +1,66 @@
+<html>
+<head>
+  <title>17_d012</title>
+</head>
+<body>
+  <div id = "container"></div>
+  <script src="js/three.js"></script>
+  <script id = "vertexShader" type = "x-shader/x-vertex">
+  void main() {
+        gl_Position = vec4( position, 1.0 );
+    }
+  </script>
+
+  <script id = "fragmentShader" type = "x-shader/x-fragment">
+  //experiment with shaping function and rotate functions
+
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_time;
+
+  #define PI 3.1415926
+
+  float circleSDF(vec2 st, vec2 p, float d){
+      return length(st-p) * d;
+  }
+
+  float fill(float sdf, float w){
+      return 1.-step(w,sdf);
+  }
+
+  float stroke(float sdf, float w, float o){
+     return step(w-o,sdf) - step(w+o,sdf);
+  }
+
+  vec2 rotate(vec2 st, float angle){
+      return mat2(cos(angle),-sin(angle),sin(angle),cos(angle)) * st;
+  }
+
+
+  void main() {
+      vec2 st = gl_FragCoord.xy/u_resolution.xy;
+      st.x *= u_resolution.x/u_resolution.y;
+      st *= 5.;
+      vec2 st_f = fract(st);
+      vec2 st_i = floor(st);
+      float t = u_time  * PI;
+      // st_f = (mod(floor(t*.2),2.)*mod(st_i.y,2.)+mod(ceil(t*.2),2.)*mod(st_i.x,2.))*rotate(vec2(st_f.x-.5,st_f.y+.25),PI/4.);
+      // st_f = (mod(floor(t*.2),2.)*mod(st_i.y,2.)*rotate(vec2(st_f.x-.5,st_f.y+.25),PI/4.)+mod(ceil(t*.2),2.)*mod(st_i.x,2.)*rotate(vec2(st_f.x+0.25,st_f.y-0.5),-PI/4.));
+      st_f = (mod(floor(t*.2),2.)*mod(st_i.y,2.)*rotate(vec2(st_f.x+0.25,st_f.y-0.5),-PI/4.)+mod(ceil(t*.2),2.)*mod(st_i.x,2.)*rotate(vec2(st_f.x-.5,st_f.y+.25),PI/4.));
+  	float change = .3 * sin(t);
+      vec3 color = vec3(0.935*(1.-sin(2.*t)*.3),0.263*(1.-sin(2.*t)*.3),0.652*(1.-sin(2.*t)*.3));
+      float c1 = circleSDF(st_f - change, vec2(.5),2.);
+      float c2 = circleSDF(st_f + change, vec2(.5),2.);
+      float sdf = min(c1,c2);
+      color += vec3(0.077,0.718,0.900)*sdf;
+
+      gl_FragColor = vec4(color,1.0);
+  }
+  </script>
+<script src = "app.js"></script>
+</body>
+</html>
