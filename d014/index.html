@@ -1,0 +1,72 @@
+<html>
+<head>
+  <title>17_d014</title>
+</head>
+<body>
+  <div id = "container"></div>
+  <script src="js/three.js"></script>
+  <script id = "vertexShader" type = "x-shader/x-vertex">
+  void main() {
+        gl_Position = vec4( position, 1.0 );
+    }
+  </script>
+
+  <script id = "fragmentShader" type = "x-shader/x-fragment">
+  //experiment with shaping function and rotate functions
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+
+  #define PI 3.1415936
+
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_time;
+
+  float rectSDF(vec2 st, vec2 s) {
+      st = st*2.-1.;
+      return max( abs(st.x/s.x),
+                  abs(st.y/s.y));
+  }
+
+  float circleSDF(vec2 st) {
+      return length(st-.5)*2.;
+  }
+
+  float fill(float sdf, float w) {
+      return 1.-step(w,sdf);
+  }
+
+  float stroke(float sdf, float w, float o) {
+      return step(w-o,sdf)-step(w+o,sdf);
+  }
+
+  float impulse( float k, float x ){
+      float h = k*x;
+      return h*exp(1.0-h);
+  }
+
+  void main() {
+      vec2 st = gl_FragCoord.xy/u_resolution.xy;
+      st.x *= u_resolution.x/u_resolution.y;
+      vec3 color = vec3(1.000,0.801,0.859);
+
+      float t = u_time / 2.5;
+
+      float c = circleSDF(st);
+      float r = rectSDF(st,vec2(1.));
+
+      // float sdf = mix(c,r,abs(sin(u_time-PI))*abs(sin(u_time-PI)));
+      //use impluse shaping function to detemine the speed/shape of how it transit bt circle and rect
+      float sdf = mix(c,r,impulse(12.,abs(sin(t))));
+
+      color = mix(color,vec3(1.,1.,1.),
+          	stroke(sdf,.5,.01));
+
+
+      gl_FragColor = vec4(color,1.0);
+  }
+  </script>
+<script src = "app.js"></script>
+</body>
+</html>

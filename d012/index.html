@@ -47,7 +47,7 @@
       st *= 5.;
       vec2 st_f = fract(st);
       vec2 st_i = floor(st);
-      float t = u_time  * PI;
+      float t = u_time * 0.5* PI;
       // st_f = (mod(floor(t*.2),2.)*
       //mod(st_i.y,2.)+mod(ceil(t*.2),2.)*
       //mod(st_i.x,2.))*rotate(vec2(st_f.x-.5,st_f.y+.25),PI/4.);
