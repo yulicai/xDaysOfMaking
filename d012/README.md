@@ -1,4 +1,4 @@
-#day 012
+# day 012
 
 <br />
 No Interactions for this one
@@ -13,7 +13,7 @@ three.js, GLSL
  <br />
  <br />
 A supple blossom, coupled with utter elation <br />
-##learned today
+## learned today
 Feb 12th 2017
 <br />
  <br />

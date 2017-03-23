@@ -1,4 +1,4 @@
-#day 009
+# day 009
 
 <br />
 No interactions for this one
@@ -14,14 +14,14 @@ three.js | shader
  <br />
 Plum gradually sparse, ice has been dissolved in warm. East wind blowing, quietly came the spring. Flowing with drifting water, homing to the end of the world.
 
-##learned today
+## learned today
 Feb 1st 2017
 <br />
  <br />
 Image Processing Section in the book of shaders
 
-<br />
-####sampler2D( ) and texture2D( )
+
+#### sampler2D( ) and texture2D( )
 
 "Once the texture is loaded and linked to a valid uniform sampler2D you can ask for specific color value at specific coordinates (formated on a vec2 variable) usin the texture2D() function which will return a color formated on a vec4 variable."
  <pre><code>

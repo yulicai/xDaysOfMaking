@@ -1,4 +1,4 @@
-#day 005
+# day 005
 no interaction for this one
 <br />
 [project link](http://caiyuli.com/projects/xDaysOfMaking/d005/)
@@ -12,7 +12,7 @@ three.js | shader
  <br />
  Did little, no excuse, no poem for today.
 
-##learned today
+## learned today
 Noise section from the book of shaders.
  <br />
  <br />

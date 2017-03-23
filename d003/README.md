@@ -1,4 +1,4 @@
-#day 003
+# day 003
 move mouse horizontally to play with it
 <br />
 [project link](http://caiyuli.com/projects/xDaysOfMaking/d003/)
@@ -12,7 +12,7 @@ three.js | shader
  <br />
  Luxuriant peach tree, flourish blossom, firm and squishy peaches, many many leaves.
 
-##learned today
+## learned today
 Random section from the book of shaders.
  <br />
  <br />

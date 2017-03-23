@@ -1,4 +1,4 @@
-#day 0011
+# day 0011
 
 <br />
 Move mouse to change view point
@@ -13,18 +13,18 @@ three.js
  <br />
  <br />
 Far in the clouds of north mountain, recluse chill and sing. <br />
-##learned today
+## learned today
 Feb 10th 2017
 <br />
  <br />
 Practicing the shadow and multiplying objects in three js
 
-####MeshStandardMaterial
+#### MeshStandardMaterial
 This approach differs from older approaches in that instead of using approximations for the way in which light	interacts with a surface, a physically correct model is used. The idea is that, instead of tweaking materials to look good under specific lighting, a material can	be created that will react 'correctly' under all lighting scenarios.
 <br />
 In practice this gives a more	accurate and realistic looking result than the MeshLambertMaterial or MeshPhongMaterial, at the cost of being somewhat more computationally expensive.
 
-####shadow in three js
+#### shadow in three js
 Shadows are disabled by default
 <br />
 renderer need to be enabled shadow <br />

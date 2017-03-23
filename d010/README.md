@@ -1,4 +1,4 @@
-#day 0010
+# day 0010
 
 <br />
 No interactions for this one
@@ -14,25 +14,26 @@ three.js
  <br />
 The moment we encountered, smiling, I saw the trees in paradise. It was bright, it was warm, it was blazing and shimmering.
 
-##learned today
+## learned today
 Feb 5th 2017
 <br />
  <br />
 Practicing the basics applications of threejs
 
-####basics
+#### basics
 geometry, material >> mesh <br /><br />
 light, mesh >> scene<br /><br />
-camera, scene >> renderer<br />
-####update position
+camera, scene >> renderer
+
+#### update position
 If update needed, then need to add these two kinds of code accordingly to the render function
  <pre><code>
 mesh.geometry.verticesNeedUpdate = true;
 //if using bufferGeometry, use the following pattern instead
 //geometry.attributes.position.needsUpdate = true;
  </code></pre>
-<br />
-####color control
+
+#### color control
 [threejs documentation](https://threejs.org/docs/index.html#Reference/Math/Color)
  <code><pre>
 var color = new THREE.Color("rgb(255, 0, 0)");

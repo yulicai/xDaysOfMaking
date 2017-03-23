@@ -1,4 +1,4 @@
-#day 002
+# day 002
 [project link](http://caiyuli.com/projects/xDaysOfMaking/d002/)
  <br />
  <br />
@@ -11,7 +11,7 @@ three.js | shader
 Catfish,Cod,Salmon,Trout,Halibut...Awww countless fishes, we are so blessed.
 
 
-##learned today
+## learned today
 Patterns section from the book of shaders.
  <br />
  <br />

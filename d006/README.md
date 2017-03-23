@@ -1,4 +1,4 @@
-#day 006
+# day 006
 Practice around mouse controls over color converting
 <br />
 Move mouse across the diagonal line to convert the color.
@@ -14,7 +14,7 @@ three.js | shader
  <br />
  Water ripples in belle’s eyes,Mountain her brows darkly dyes.
 
-##learned today
+## learned today
 I skipped one day. Today is Jan 16 2017
 <br />
 Practice logic computation, e.g: use step( ) function to give a result of 0. and 1. and thus control different sections

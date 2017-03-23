@@ -1,4 +1,4 @@
-#day 004
+# day 004
 no interaction for this one
 <br />
 [project link](http://caiyuli.com/projects/xDaysOfMaking/d004/)
@@ -12,7 +12,7 @@ three.js | shader
  <br />
  Moist and crystal dew, never evaporate before sunrises. Let's party, and get wasted.
 
-##learned today
+## learned today
 Noise section from the book of shaders.
  <br />
  <br />

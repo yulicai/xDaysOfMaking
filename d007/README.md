@@ -1,4 +1,4 @@
-#day 007
+# day 007
 
 <br />
 Move mouse to slightly change the color and movement.
@@ -14,11 +14,11 @@ three.js | shader
  <br />
  Lotus sheds, sea melts into sky, and water waving around the rising sunset.
 
-##learned today
+## learned today
 Jan 19th 2017
 <br />
 Cellular Noise Section in the book of shaders
-<br />
+
 ### for loop method in shaders
 ### Voronoi diagram
 <br />

@@ -1,4 +1,4 @@
-#day 008
+# day 008
 
 <br />
 Move mouse to slightly change the color and movement.
@@ -14,7 +14,7 @@ three.js | shader
  <br />
  icy cloud,dark sky; single boat, floating away, hilly-gully passing by, to the heart of river, down the roaring of waves, wind coming around, merchants greetings to each other, thousands of boats. lonely bird, ethereal singing, hollow nightfall  .
 
-##learned today
+## learned today
 Jan 26th 2017
 <br />
  <br />

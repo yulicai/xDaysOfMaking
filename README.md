@@ -8,12 +8,10 @@ Since a lot of contents from this poetry collection are describing natural patte
 Starting Date: Jan 10 2017
 
 
-<br />
-<br />
-#some useful functions from the book of shader
+# some useful functions from the book of shader
 
 
-###2D random
+### 2D random
 <pre><code>
 vec2 random2( vec2 p ) {
     return fract(sin(vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)))) * 43758.5453);
@@ -67,7 +65,7 @@ float stroke(float v, float p, float w){
 color += stroke(st.x,0.5,0.1)
 </code></pre>
 
-**Thick stroke**
+### Thick stroke
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_thick.png" width = "250">
 <br />
@@ -92,7 +90,7 @@ void main() {
 </code></pre>
 
 
-**Thin stroke**
+#### Thin stroke 
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_thin.png" width = "250">
 <br />
@@ -100,7 +98,7 @@ void main() {
 color += stroke(sdf,0.400,0.012);
 </code></pre>
 
-**Fract Distance Field Stroke**
+#### Fract Distance Field Stroke
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/stroke_fract_sdf.png" width = "250">
 <br />
@@ -138,10 +136,11 @@ float box(vec2 st, float p, float w){
 
 }
 </code></pre>
-<br />
+
+
 ### Sign Distance Field (shaping)
 
-**Rectangle SDF**
+#### Rectangle SDF
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/rect_sdf.png" width = "250">
 <pre><code>
@@ -163,7 +162,7 @@ void main() {
 }
 </code></pre>
 
-**Min Circle SDF**
+#### Min Circle SDF
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/min_circle_sdf.png" width = "250">
 
@@ -186,7 +185,7 @@ void main() {
 }
 </code></pre>
 
-**Combining Shapes**
+#### Combining Shapes
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/combined_shape.png" width = "250">
 <br />
@@ -215,7 +214,7 @@ void main() {
 </code></pre>
 
 
-**Adding one more shape**
+#### Adding one more shape
 
 <img src = "https://github.com/yulicai/xDaysOfMaking/raw/master/images/add_shape.png" width = "250">
 * by minus .3 to the original x coordinate, it moves the circle the right by .3 <br />

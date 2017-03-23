@@ -1,4 +1,4 @@
-#day 014
+# day 014
 
 <br />
 No Interactions for this one
@@ -13,8 +13,8 @@ three.js, GLSL
  <br />
  <br />
  Endless insatiable, blinding me sweetly <br />
- 
-##learned today
+
+## learned today
 Feb 22th 2017
 <br />
  <br />
