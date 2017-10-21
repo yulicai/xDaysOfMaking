@@ -34,14 +34,14 @@ class SteeringObject {
     }
 
     show() {
-        stroke(222);
+        stroke(255);
         strokeWeight(1);
         let center = createVector(width / 2, 0);
         let spoke = p5.Vector.sub(this.pos, center);
         spoke.setMag(500);
         spoke.add(this.pos);
         line(this.pos.x, this.pos.y + 15, spoke.x, spoke.y);
-        stroke(0,214,199);
+        stroke(222);
         strokeWeight(this.r);
         point(this.pos.x, this.pos.y);
 

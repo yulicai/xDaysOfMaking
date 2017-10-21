@@ -5,6 +5,7 @@
 <body>
   <div id = "container"></div>
   <script src="js/three.js"></script>
+  <script src="js/dat.gui.min.js"></script>
   <script id = "vertexShader" type = "x-shader/x-vertex">
   void main() {
         gl_Position = vec4( position, 1.0 );
@@ -20,12 +21,31 @@
   uniform vec2 u_resolution;
   uniform vec2 u_mouse;
   uniform float u_time;
+  uniform float u_base_r;
+  uniform float u_base_g;
+  uniform float u_base_b;
+  uniform float u_time_1;
+  uniform float u_time_2;
+  // Diffuse Light
+  uniform float u_circle_size;
+  uniform float u_diffuse_r;
+  uniform float u_diffuse_g;
+  uniform float u_diffuse_b; 
+  // Density
+  uniform float u_density_1;
+  uniform float u_density_2;
+
   uniform sampler2D u_tex0;
 
   vec2 random2(vec2 st){
       st = vec2( dot(st,vec2(127.1,311.7)),
                 dot(st,vec2(269.5,183.3)) );
       return -1.0 + 2.0*fract(sin(st)*43758.5453123);
+  }
+
+
+  float circleSDF(vec2 st) {
+      return length(st-.5)*3.;
   }
 
   // Value Noise by Inigo Quilez - iq/2013
@@ -55,30 +75,37 @@
       	st.x -= (u_resolution.x*.5 - u_resolution.y*.5) / u_resolution.y;
 
       }
+      // Save it for creating circle mask
+      vec2 ori_st = st;
+      
 
-
-      vec3 baseColor = vec3(0.664,0.912,0.886);
+      // vec3 baseColor = vec3(0.664,0.912,0.886);
+      vec3 baseColor = vec3(u_base_r,u_base_g,u_base_b);
       vec3 color = vec3(0.0);
       float t = 1.0;
 
       /* effect one */
       // Animate the coordinate space
-      t = abs(1.0-sin(u_time*.1))*4.;
-      st += noise(st*2.3)*t;
+      t = abs(1.0-sin(u_time*u_time_1))*4.;
+      st += noise(st*u_density_1)*t;
       //use smoothstep to create shapes
-      color = vec3(1.) * smoothstep(.18,.1,noise(st)); // Big black drops
+      color = vec3(1.) * smoothstep(.18,.1,noise(st*1.)); // Big black drops
+
       color += smoothstep(.15,.2,noise(st*10.)); // Black splatter
       color -= smoothstep(.45,.5,noise(st*10.)); // Holes on splatter
-
+      // Circle to create masking light difuse effect
+      float c = length(noise(vec2(ori_st.x-.5*t,ori_st.y-.3*t)))*u_circle_size;
       /* effect two */
       //simplify the shaping function to view clearly how the animation moves based on noise( )
-      t = abs(1.0-sin(u_time*.1))*2.;
-      st += noise(st*6.)*t; // Animate the coordinate space
+      t = abs(1.0-sin(u_time*u_time_2))*2.;
+      st += noise(st*u_density_2)*t; // Animate the coordinate space
       color = vec3(1.0) * smoothstep(.18,.1,st.x); // Big black drops
       color += smoothstep(.15,.16,st.x); // Black splatter
       // color -= smoothstep(.45,.5,st.x); // Holes on splatter
-     vec4 tempColor = texture2D(u_tex0,st);
-     baseColor =baseColor* vec3(st.x+0.5);
+      vec4 tempColor = texture2D(u_tex0,st);
+      baseColor =baseColor* vec3(st.x+0.5);
+      color = mix(color,vec3(u_diffuse_r,u_diffuse_g,u_diffuse_b),c);
+      // gl_FragColor = vec4(color*baseColor,1.0);
       gl_FragColor = vec4(color*baseColor,1.0)*tempColor;
   }
   </script>
