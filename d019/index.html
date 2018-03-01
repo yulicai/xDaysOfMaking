@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>yuli io entry</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    
+  </head>
+
+  <body>
+     
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/90/three.js"></script>
+
+    <script src="js/Detector.js"></script>
+    <script src="js/Cloth.js"></script>
+    <script type="x-shader/x-fragment" id="fragmentShaderDepth">
+
+      #include <packing>
+
+      uniform sampler2D texture;
+      varying vec2 vUV;
+
+      void main() {
+
+        vec4 pixel = texture2D( texture, vUV );
+
+        if ( pixel.a < 0.5 ) discard;
+
+        gl_FragData[ 0 ] = packDepthToRGBA( gl_FragCoord.z );
+
+      }
+    </script>
+
+    <script type="x-shader/x-vertex" id="vertexShaderDepth">
+
+      varying vec2 vUV;
+
+      void main() {
+
+        vUV = 0.75 * uv;
+
+        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+        gl_Position = projectionMatrix * mvPosition;
+
+      }
+
+    </script>
+
+    <script>
+
+      /* testing cloth simulation */
+
+      var pinsFormation = [];
+      var pins = [ 6 ];
+
+      pinsFormation.push( pins );
+
+      pins = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ];
+      pinsFormation.push( pins );
+
+      pins = [ 0 ];
+      pinsFormation.push( pins );
+
+      pins = []; // cut the rope ;)
+      pinsFormation.push( pins );
+
+      pins = [ 0, cloth.w ]; // classic 2 pins
+      pinsFormation.push( pins );
+
+      pins = pinsFormation[ 1 ];
+
+
+      function togglePins() {
+
+        pins = pinsFormation[ ~~ ( Math.random() * pinsFormation.length ) ];
+
+      }
+
+      if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
+      var container;
+      var camera, scene, renderer;
+
+      var projectNum = 6;
+      var clothGeometries = [];
+      var clothObjects = [];
+      var object;
+
+      var raycaster = new THREE.Raycaster();
+      var INTERSECTED;
+      var mouse = new THREE.Vector2(), INTERSECTED;
+      var clicked = false;
+
+      init();
+      animate();
+
+      function init() {
+
+        container = document.createElement( 'div' );
+        document.body.appendChild( container );
+
+        // scene
+
+        scene = new THREE.Scene();
+        scene.fog = new THREE.Fog( 0xffffff, 500, 10000 );
+
+        // camera
+
+        camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
+        camera.position.x = 1000;
+        camera.position.y = 50;
+        camera.position.z = 1500;
+        scene.add( camera );
+
+        // lights
+
+        var light, materials;
+
+        scene.add( new THREE.AmbientLight( 0x666666 ) );
+
+        light = new THREE.DirectionalLight( 0xffffff, 1.75 );
+        light.position.set( 100, 200, 0 );
+        light.position.multiplyScalar( 2.3 );
+
+        light.castShadow = true;
+
+        light.shadow.mapSize.width = 4000;
+        light.shadow.mapSize.height =2000;
+
+        var d = 800;
+
+        light.shadow.camera.left = - d;
+        light.shadow.camera.right = d;
+        light.shadow.camera.top = d;
+        light.shadow.camera.bottom = - d;
+
+        light.shadow.camera.far = 1500;
+
+        scene.add( light );
+
+        // cloth material
+        /*
+        var loader = new THREE.TextureLoader();
+        var clothTexture = loader.load( 'textures/self2.png' );
+        clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
+        clothTexture.anisotropy = 16;
+
+        var clothMaterial = new THREE.MeshPhongMaterial( {
+          specular: 0x030303,
+          map: clothTexture,
+          side: THREE.DoubleSide,
+          alphaTest: 0.5
+        } );
+        */
+
+        // cloth geometry
+        for(var i=0;i<projectNum;i++){
+            var loader = new THREE.TextureLoader();
+            var path = "textures/project"+i +".png"
+            var clothTexture = loader.load( path );
+            clothTexture.wrapS = clothTexture.wrapT = THREE.RepeatWrapping;
+            clothTexture.anisotropy = 16;
+
+            var clothMaterial = new THREE.MeshPhongMaterial( {
+              specular: 0x030303,
+              map: clothTexture,
+              side: THREE.DoubleSide,
+              alphaTest: 0.5
+              });
+
+            var clothGeometry = new THREE.ParametricGeometry( clothFunction, cloth.w, cloth.h );
+            // var clothGeometry.dynamic = true;
+            clothGeometries.push(clothGeometry);
+
+            var uniforms = { texture:  { value: clothTexture } };
+            var vertexShader = document.getElementById( 'vertexShaderDepth' ).textContent;
+            var fragmentShader = document.getElementById( 'fragmentShaderDepth' ).textContent;
+
+            // cloth mesh
+
+             clothObject = new THREE.Mesh( clothGeometry, clothMaterial );
+             clothObject.position.set( -900+i*300, -200, 0 );
+             clothObject.castShadow = true;
+        
+
+             clothObject.customDepthMaterial = new THREE.ShaderMaterial( {
+              uniforms: uniforms,
+              vertexShader: vertexShader,
+              fragmentShader: fragmentShader,
+              side: THREE.DoubleSide
+               } );
+             clothObjects.push(clothObject);
+            scene.add( clothObject );
+        }
+        /*
+        clothGeometry = new THREE.ParametricGeometry( clothFunction, cloth.w, cloth.h );
+        clothGeometry.dynamic = true;
+
+        var uniforms = { texture:  { value: clothTexture } };
+        var vertexShader = document.getElementById( 'vertexShaderDepth' ).textContent;
+        var fragmentShader = document.getElementById( 'fragmentShaderDepth' ).textContent;
+
+        // cloth mesh
+
+        object = new THREE.Mesh( clothGeometry, clothMaterial );
+        object.position.set( 0, 0, 0 );
+        object.castShadow = true;
+        
+
+        object.customDepthMaterial = new THREE.ShaderMaterial( {
+          uniforms: uniforms,
+          vertexShader: vertexShader,
+          fragmentShader: fragmentShader,
+          side: THREE.DoubleSide
+        } );
+        scene.add( object );
+        */
+
+        // ground
+
+        var groundTexture = loader.load( 'textures/t3.png' );
+        groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+        groundTexture.repeat.set( 50, 50 );
+        groundTexture.anisotropy = 16;
+
+        var groundMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0x111111, map: groundTexture } );
+
+        var mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 20000, 20000 ), groundMaterial );
+        mesh.position.y = - 250;
+        mesh.rotation.x = - Math.PI / 2;
+        // mesh.position.z = -110;
+        // mesh.rotation.x = - Math.PI / 4;
+        mesh.receiveShadow = true;
+        scene.add( mesh );
+
+
+        // renderer
+
+        renderer = new THREE.WebGLRenderer( { antialias: true } );
+        renderer.setPixelRatio( window.devicePixelRatio );
+        renderer.setSize( window.innerWidth, window.innerHeight );
+        renderer.setClearColor( scene.fog.color );
+
+        container.appendChild( renderer.domElement );
+        container.addEventListener( 'mousemove', onMouseMove, false );
+        // container.addEventListener( 'click', onMouseClick, false );
+        container.addEventListener( 'mousedown', onMouseDown, false );
+        container.addEventListener( 'mouseup', onMouseUp, false );
+
+        renderer.gammaInput = true;
+        renderer.gammaOutput = true;
+
+        renderer.shadowMap.enabled = true;
+
+
+        //
+
+        window.addEventListener( 'resize', onWindowResize, false );
+
+      }
+
+      //
+
+      function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize( window.innerWidth, window.innerHeight );
+
+      }
+
+      //
+
+      function animate() {
+
+        requestAnimationFrame( animate );
+
+        var time = Date.now();
+
+        var windStrength = Math.cos( time / 7000 ) * 20 + 40;
+        
+        windForce.set( Math.sin( time / 2000 ), Math.cos( time / 3000 ), Math.sin( time / 1000 ) )
+        windForce.normalize()
+        windForce.multiplyScalar( windStrength );
+
+        simulate( time );
+        render();
+       
+
+      }
+
+      function render() {
+
+        var p = cloth.particles;
+        for(var a = 0; a<projectNum;a++){
+          for ( var i = 0, il = p.length; i < il; i ++ ) {
+          clothGeometries[a].vertices[ i ].copy( p[ i ].position );
+       
+
+        }
+
+        clothGeometries[a].computeFaceNormals();
+        clothGeometries[a].computeVertexNormals();
+
+        clothGeometries[a].normalsNeedUpdate = true;
+        clothGeometries[a].verticesNeedUpdate = true;
+      }
+
+
+        camera.lookAt( scene.position );
+        camera.updateMatrixWorld();
+
+        /*
+        // Raycaster and clicking 
+        raycaster.setFromCamera( mouse, camera );
+        // See if the ray from the camera into the world hits one of our meshes
+        var intersects = raycaster.intersectObject( scene.children,true );
+        var ori_color = new THREE.Color();
+
+        if(intersects.length>0){
+          console.log("intersected")
+          if(INTERSECTED != intersects[0].object){
+            if(INTERSECTED) {
+              ori_color = INTERSECTED.material.color;
+              INTERSECTED.material.color.set( 0xff0000 );
+            }
+            INTERSECTED = intersects[0].object;
+          }
+        }else{
+          if(INTERSECTED) INTERSECTED.material.color.set(ori_color);
+          INTERSECTED = null;
+        }
+        */
+
+        /*
+       if(intersects.length>0){
+          for ( var i = 0; i < intersects.length; i++ ) {
+            ori_color = intersects[ i ].object.material.color;
+            intersects[ i ].object.material.color.set( 0xff0000 );
+            // window.open("www.google.com");
+            if(clicked){
+              clicked = !clicked;
+              window.open("http://www.google.com");
+              console.log("clicked");
+            }
+          }
+       }
+       else{
+          clicked = false;
+          object.material.color.set(ori_color);
+       }
+      */
+       
+
+        renderer.render( scene, camera );
+
+      }
+
+      function onMouseMove( event ) {
+        event.preventDefault();
+        mouse.x = ( event.clientX / renderer.domElement.clientWidth ) * 2 - 1;
+        mouse.y = - ( event.clientY / renderer.domElement.clientHeight ) * 2 + 1;
+      }
+
+      function onMouseDown(){
+        clicked = true;
+      }
+      function onMouseUp(){
+        clicked = false;
+      }
+
+
+    </script>
+  </body>
+</html>

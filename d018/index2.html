@@ -1,0 +1,111 @@
+<html>
+<head>
+  <title>17_d016</title>
+  <meta http-equiv='cache-control' content='no-cache'>
+<meta http-equiv='expires' content='0'>
+<meta http-equiv='pragma' content='no-cache'>
+    <script src="../Common/howler.min.js"></script>
+    <!-- <meta http-equiv="refresh" content="120;url=../Emoji/index.html" /> -->
+    <!-- <script src="../Common/auto_switch_onIX.js"></script> -->
+</head>
+<body  style="background-color: black;">
+  <div id = "container"></div>
+  <script src="js/three.js"></script>
+  <script src="js/dat.gui.min.js"></script>
+
+  <script src="../Common/socket_io_2_0_2.slim.js"></script>
+  <script src="../Common/serial_reader.js"></script>
+  <script id = "vertexShader" type = "x-shader/x-vertex">
+  void main() {
+        gl_Position = vec4( position, 1.0 );
+    }
+  </script>
+
+  <script id = "fragmentShader" type = "x-shader/x-fragment">
+  //reference http://thebookofshaders.com/edit.php#11/splatter.frag
+  #ifdef GL_ES
+  precision mediump float;
+  #endif
+  uniform vec2 u_resolution;
+  uniform vec2 u_mouse;
+  uniform float u_time;
+  uniform float u_base_r;
+  uniform float u_base_g;
+  uniform float u_base_b;
+  uniform float u_time_1;
+  uniform float u_time_2;
+  // Diffuse Light
+  uniform float u_circle_size;
+  uniform float u_diffuse_r;
+  uniform float u_diffuse_g;
+  uniform float u_diffuse_b; 
+  // Density
+  uniform float u_density_1;
+  uniform float u_density_2;
+  uniform sampler2D u_tex0;
+  vec2 random2(vec2 st){
+      st = vec2( dot(st,vec2(127.1,311.7)),
+                dot(st,vec2(269.5,183.3)) );
+      return -1.0 + 2.0*fract(sin(st)*43758.5453123);
+  }
+  float circleSDF(vec2 st) {
+      return length(st-.5)*3.;
+  }
+  // Value Noise by Inigo Quilez - iq/2013
+  // https://www.shadertoy.com/view/lsf3WH
+  float noise(vec2 st) {
+      vec2 i = floor(st);
+      vec2 f = fract(st);
+      vec2 u = f*f*(3.0-2.0*f);
+      u = smoothstep(0.,1.,f);
+      return mix( mix( dot( random2(i + vec2(0.0,0.0) ), f - vec2(0.0,0.0) ),
+                       dot( random2(i + vec2(1.0,0.0) ), f - vec2(1.0,0.0) ), u.x),
+                  mix( dot( random2(i + vec2(0.0,1.0) ), f - vec2(0.0,1.0) ),
+                       dot( random2(i + vec2(1.0,1.0) ), f - vec2(1.0,1.0) ), u.x), u.y);
+  }
+  void main() {
+      vec2 st = gl_FragCoord.xy/u_resolution.xy;
+      //st.x *= u_resolution.x/u_resolution.y;
+      // FOR THE ASPECT RATIO
+      if (u_resolution.y > u_resolution.x) {
+      	st.y *= u_resolution.y / u_resolution.x;
+      	st.y -= (u_resolution.y*.5 - u_resolution.x*.5) / u_resolution.x;
+      }
+      else {
+      	st.x *= u_resolution.x / u_resolution.y;
+      	st.x -= (u_resolution.x*.5 - u_resolution.y*.5) / u_resolution.y;
+      }
+      // Save it for creating circle mask
+      vec2 ori_st = st;
+      
+      // vec3 baseColor = vec3(0.664,0.912,0.886);
+      vec3 baseColor = vec3(u_base_r,u_base_g,u_base_b);
+      vec3 color = vec3(0.0);
+      float t = 1.0;
+      /* effect one */
+      // Animate the coordinate space
+      t = abs(1.0-sin(u_time*u_time_1))*4.;
+      st += noise(st*u_density_1)*t;
+      //use smoothstep to create shapes
+      color = vec3(1.) * smoothstep(.18,.1,noise(st*1.)); // Big black drops
+      color += smoothstep(.15,.2,noise(st*10.)); // Black splatter
+      color -= smoothstep(.45,.5,noise(st*10.)); // Holes on splatter
+      // Circle to create masking light difuse effect
+      float c = length(noise(vec2(ori_st.x-.5*t,ori_st.y-.3*t)))*u_circle_size;
+      /* effect two */
+      //simplify the shaping function to view clearly how the animation moves based on noise( )
+      t = abs(1.0-sin(u_time*u_time_2))*2.;
+      st += noise(st*u_density_2)*t; // Animate the coordinate space
+      color = vec3(1.0) * smoothstep(.18,.1,st.x); // Big black drops
+      color += smoothstep(.15,.16,st.x); // Black splatter
+      // color -= smoothstep(.45,.5,st.x); // Holes on splatter
+      vec4 tempColor = texture2D(u_tex0,st);
+      baseColor =baseColor* vec3(st.x+0.5);
+      color = mix(color,vec3(u_diffuse_r,u_diffuse_g,u_diffuse_b),c);
+      // gl_FragColor = vec4(color*baseColor,1.0);
+      gl_FragColor = vec4(color*baseColor,1.0)*tempColor;
+  }
+  </script>
+<script src = "app.js"></script>
+</body>
+</html>

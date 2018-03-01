@@ -77,7 +77,7 @@ function init() {
         },
         u_tex0: {
             type: "t",
-            value: new THREE.TextureLoader().load("textures/whatup.jpg")
+            value: new THREE.TextureLoader().load("textures/self2.png")
         }
 
     };
